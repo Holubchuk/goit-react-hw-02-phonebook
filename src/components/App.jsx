@@ -10,7 +10,7 @@ export class App extends Component {
     filter: '',
   };
 
-  handleChange = event => {
+  handleFilterChange = event => {
     const value = event.target.value;
     this.setState({ filter: value });
   };
@@ -57,7 +57,7 @@ export class App extends Component {
         <h2 style={{ textAlign: 'center' }}>Contacts</h2>
         <SearchFilter
           filter={this.state.filter}
-          handleChange={this.handleChange}
+          handleFilterChange={this.handleFilterChange}
         />
         <ContactsList
           contacts={filteredContacts}
