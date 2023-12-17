@@ -5,16 +5,13 @@ export class AddContactForm extends Component {
   handleSubmit = event => {
     event.preventDefault();
 
-    const name = event.currentTarget.elements.name.value;
+    const name = event.currentTarget.elements.name.value.toLowerCase();
     const number = event.currentTarget.elements.number.value;
 
-    if (name.trim() === '') {
-      alert('Please enter a valid name');
-      return;
-    }
+
     const formData = {
       name,
-      number,
+      number
     };
 
     this.props.handleAddContact(formData);
@@ -23,16 +20,16 @@ export class AddContactForm extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form onSubmit={this.handleSubmit} className={css.form}>
         <label>
-          Name:
-          <input type="text" name="name" required />
+          <span className={css.formLabel}>Name:</span>
+          <input type="text" name="name" placeholder='Alex' className={css.formInput} required />
         </label>
         <label>
-          Number:
-          <input type="number" name="number" required />
+        <span className={css.formLabel}>Number:</span>
+          <input type="tel" pattern="[0-9]{3}-[0-9]{2}-[0-9]{2}" max='7' name="number" placeholder='111-11-11' className={css.formInput} required />
         </label>
-        <button type="submit">Add Contact</button>
+        <button type="submit" className={css.formButton}>Add Contact</button>
       </form>
     );
   }

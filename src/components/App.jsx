@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { nanoid } from 'nanoid';
 import { AddContactForm } from './AddContactForm/AddContactForm';
+import { SearchFilter } from './SearchFilter/SearchFilter';
+import { ContactsList } from './ContactsList/ContactsList';
 
 export class App extends Component {
   state = {
@@ -9,7 +11,8 @@ export class App extends Component {
   };
 
   handleChange = event => {
-    this.setState({ [event.target.name]: event.target.value });
+    const value = event.target.value;
+    this.setState({ filter: value });
   };
 
   handleAddContact = formData => {
@@ -33,34 +36,33 @@ export class App extends Component {
     });
   };
 
-  render() {
-    const { contacts, filter } = this.state;
+  handleDeleteContact = contactId => {
+    this.setState({
+      contacts: this.state.contacts.filter(contact => contact.id !== contactId),
+    });
+  };
 
-    const filteredContacts = contacts.filter(profile =>
-      profile.name.toLowerCase().includes(filter.trim().toLowerCase())
+  render() {
+    const filteredContacts = this.state.contacts.filter(profile =>
+      profile.name
+        .toLowerCase()
+        .includes(this.state.filter.trim().toLowerCase())
     );
 
     return (
       <div>
-        <h2>Phonebook</h2>
+        <h2 style={{ textAlign: 'center' }}>Phonebook</h2>
         <AddContactForm handleAddContact={this.handleAddContact} />
-        <p>Find Profile:</p>
-        <input
-          value={this.state.filter}
-          onChange={this.handleChange}
-          type="text"
-          name="filter"
-          placeholder="Ivan..."
-        />
 
-        <h2>Contact List</h2>
-        <ul>
-          {filteredContacts.map(contact => (
-            <li key={contact.id}>
-              {contact.name}: {contact.number}
-            </li>
-          ))}
-        </ul>
+        <h2 style={{ textAlign: 'center' }}>Contacts</h2>
+        <SearchFilter
+          filter={this.state.filter}
+          handleChange={this.handleChange}
+        />
+        <ContactsList
+          contacts={filteredContacts}
+          handleDeleteContact={this.handleDeleteContact}
+        />
       </div>
     );
   }
